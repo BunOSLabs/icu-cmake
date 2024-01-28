@@ -118,95 +118,37 @@ add_library(icu INTERFACE)
 if(ICU_BUILD_UC)
 	add_library(uc ${UC_SOURCE_FILE_LIST} ${STUBDATA_SRC})
 	add_library(icu::uc ALIAS uc)
-	set_target_properties(
-		uc 
-		PROPERTIES	
-		PREFIX "libicu_"
-		VERSION ${ICU_VERSION} 
-		SOVERSION ${ICU_VERSION_MAJOR}.${ICU_VERSION_MINOR}
-		DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 	target_compile_definitions(uc PRIVATE U_COMMON_IMPLEMENTATION)
 endif()
 if(ICU_BUILD_I18N)
 	add_library(i18n ${I18N_SOURCE_FILE_LIST})
 	add_library(icu::i18n ALIAS i18n)
-	set_target_properties(
-		i18n 
-		PROPERTIES	
-		PREFIX "libicu_"
-		VERSION ${ICU_VERSION} 
-		SOVERSION ${ICU_VERSION_MAJOR}.${ICU_VERSION_MINOR}
-		DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 	target_compile_definitions(i18n PRIVATE U_I18N_IMPLEMENTATION)
 endif()
 if(ICU_BUILD_IO)
 	add_library(io ${IO_SOURCE_FILE_LIST})
 	add_library(icu::io ALIAS io)
-	set_target_properties(
-		io 
-		PROPERTIES 
-		PREFIX "libicu_"
-		VERSION ${ICU_VERSION} 
-		SOVERSION ${ICU_VERSION_MAJOR}.${ICU_VERSION_MINOR}
-		DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 	target_compile_definitions(io PRIVATE U_IO_IMPLEMENTATION)
 endif()
 
 # set target properties
 if (NOT BUILD_SHARED_LIBS)
-	if(ICU_BUILD_UC)
-		target_compile_definitions(uc PRIVATE U_STATIC_IMPLEMENTATION)
-		set_target_properties(
-			uc
-			PROPERTIES
-			INTERFACE_COMPILE_DEFINITIONS "U_STATIC_IMPLEMENTATION")
-		if(MSVC)
-			set_target_properties(
-				uc
-				PROPERTIES
-				DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}_static"
-			MINSIZEREL_POSTFIX "_static"
-			RELEASE_POSTFIX "_static"
-			RELWITHDEBINFO_POSTFIX "_static"
-			)
-		endif()
-	endif()
-	if(ICU_BUILD_I18N)
-		target_compile_definitions(i18n PRIVATE U_STATIC_IMPLEMENTATION)
-		set_target_properties(
-			i18n
-			PROPERTIES
-			INTERFACE_COMPILE_DEFINITIONS "U_STATIC_IMPLEMENTATION")
-		if(MSVC)
-			set_target_properties(
-				i18n
-				PROPERTIES
-					DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}_static"
-			MINSIZEREL_POSTFIX "_static"
-			RELEASE_POSTFIX "_static"
-			RELWITHDEBINFO_POSTFIX "_static"
-			)
-		endif()
-	endif()
-	if(ICU_BUILD_IO)
-		target_compile_definitions(io PRIVATE U_STATIC_IMPLEMENTATION)
-		set_target_properties(
-			io
-			PROPERTIES
-			INTERFACE_COMPILE_DEFINITIONS "U_STATIC_IMPLEMENTATION")
-		if(MSVC)
-			set_target_properties(
-				io
-				PROPERTIES
-				DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}_static"
-			MINSIZEREL_POSTFIX "_static"
-			RELEASE_POSTFIX "_static"
-			RELWITHDEBINFO_POSTFIX "_static"
-			)
-		endif()
-	endif()
+	target_compile_definitions(uc PRIVATE U_STATIC_IMPLEMENTATION)
+	set_target_properties(
+		uc
+		PROPERTIES
+		INTERFACE_COMPILE_DEFINITIONS "U_STATIC_IMPLEMENTATION")
+	target_compile_definitions(i18n PRIVATE U_STATIC_IMPLEMENTATION)
+	set_target_properties(
+		i18n
+		PROPERTIES
+		INTERFACE_COMPILE_DEFINITIONS "U_STATIC_IMPLEMENTATION")
+	target_compile_definitions(io PRIVATE U_STATIC_IMPLEMENTATION)
+	set_target_properties(
+		io
+		PROPERTIES
+		INTERFACE_COMPILE_DEFINITIONS "U_STATIC_IMPLEMENTATION")
 endif()	
-
 
 # ----- Set include dir -----
 

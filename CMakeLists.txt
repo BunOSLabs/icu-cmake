@@ -36,8 +36,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(icu)
 
-set(ICU_PATH "${icu_SOURCE_DIR}")
-
 include(cmake/utils.cmake)
 icu_extract_version()
 
@@ -72,7 +70,7 @@ option(ICU_NO_INSTALL "Using libicu without installation" OFF)
 
 # ----- Info -----
 
-message(STATUS "ICU source path: ${ICU_PATH}")
+message(STATUS "ICU source path: ${icu_SOURCE_DIR}")
 message(STATUS "Is build icu::uc: ${ICU_BUILD_UC}")
 message(STATUS "Is build icu::i18n: ${ICU_BUILD_I18N}")
 message(STATUS "Is build icu::io: ${ICU_BUILD_IO}")
@@ -83,9 +81,9 @@ message(STATUS "Is generate the install target: ${ICU_INSTALL}")
 
 # ----- Find source file -----
 
-set(STUBDATA_SRC "${ICU_PATH}/icu4c/source/stubdata/stubdata.cpp")
+set(STUBDATA_SRC "${icu_SOURCE_DIR}/icu4c/source/stubdata/stubdata.cpp")
 if(ICU_BUILD_UC)
-	append_prefix_to_file_list("${ICU_PATH}/icu4c/source/common/sources.txt" UC_SOURCE_FILE_LIST "${ICU_PATH}/icu4c/source/common/")
+	append_prefix_to_file_list("${icu_SOURCE_DIR}/icu4c/source/common/sources.txt" UC_SOURCE_FILE_LIST "${icu_SOURCE_DIR}/icu4c/source/common/")
 	if(ICU_BUILD_DEBUG_INFO)
 		foreach(file ${UC_SOURCE_FILE_LIST})
 			message("icu::uc source file: ${file}")
@@ -93,7 +91,7 @@ if(ICU_BUILD_UC)
 	endif()
 endif()
 if(ICU_BUILD_I18N)
-	append_prefix_to_file_list("${ICU_PATH}/icu4c/source/i18n/sources.txt" I18N_SOURCE_FILE_LIST "${ICU_PATH}/icu4c/source/i18n/")
+	append_prefix_to_file_list("${icu_SOURCE_DIR}/icu4c/source/i18n/sources.txt" I18N_SOURCE_FILE_LIST "${icu_SOURCE_DIR}/icu4c/source/i18n/")
 	if(ICU_BUILD_DEBUG_INFO)
 		foreach(file ${I18N_SOURCE_FILE_LIST})
 			message("icu::i18n source file: ${file}")
@@ -101,7 +99,7 @@ if(ICU_BUILD_I18N)
 	endif()
 endif()
 if(ICU_BUILD_IO)
-	append_prefix_to_file_list("${ICU_PATH}/icu4c/source/io/sources.txt" IO_SOURCE_FILE_LIST "${ICU_PATH}/icu4c/source/io/")
+	append_prefix_to_file_list("${icu_SOURCE_DIR}/icu4c/source/io/sources.txt" IO_SOURCE_FILE_LIST "${icu_SOURCE_DIR}/icu4c/source/io/")
 	if(ICU_BUILD_DEBUG_INFO)
 		foreach(file ${IO_SOURCE_FILE_LIST})
 			message("icu::io source file: ${file}")
@@ -153,7 +151,7 @@ endif()
 # ----- Set include dir -----
 
 # Search for .h files in the directory
-file(GLOB HEADER_FILES "${ICU_PATH}/icu4c/source/common/unicode/*.h")
+file(GLOB HEADER_FILES "${icu_SOURCE_DIR}/icu4c/source/common/unicode/*.h")
  
 # Iterate over each .h file and copy to the installation directory
 foreach(header ${HEADER_FILES})
@@ -161,7 +159,7 @@ foreach(header ${HEADER_FILES})
 	file(COPY ${header} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/include/unicode")
 endforeach()
 # Search for .h files in the directory
-file(GLOB HEADER_FILES "${ICU_PATH}/icu4c/source/i18n/unicode/*.h")
+file(GLOB HEADER_FILES "${icu_SOURCE_DIR}/icu4c/source/i18n/unicode/*.h")
 
 # Iterate over each .h file and copy to the installation directory
 foreach(header ${HEADER_FILES})
@@ -169,7 +167,7 @@ foreach(header ${HEADER_FILES})
 	file(COPY ${header} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/include/unicode")
 endforeach()
 # Search for .h files in the directory
-file(GLOB HEADER_FILES "${ICU_PATH}/icu4c/source/io/unicode/*.h")
+file(GLOB HEADER_FILES "${icu_SOURCE_DIR}/icu4c/source/io/unicode/*.h")
 
 # Iterate over each .h file and copy to the installation directory
 foreach(header ${HEADER_FILES})
@@ -179,13 +177,13 @@ foreach(header ${HEADER_FILES})
 endforeach()
 
 target_include_directories(uc PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/include")
-target_include_directories(uc PUBLIC "$<BUILD_INTERFACE:${ICU_PATH}/icu4c/source/common>"
+target_include_directories(uc PUBLIC "$<BUILD_INTERFACE:${icu_SOURCE_DIR}/icu4c/source/common>"
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_include_directories(i18n PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/include")
-target_include_directories(i18n PUBLIC "$<BUILD_INTERFACE:${ICU_PATH}/icu4c/source/i18n>"
+target_include_directories(i18n PUBLIC "$<BUILD_INTERFACE:${icu_SOURCE_DIR}/icu4c/source/i18n>"
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_include_directories(io PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/include")
-target_include_directories(io PUBLIC "$<BUILD_INTERFACE:${ICU_PATH}/icu4c/source/io>"
+target_include_directories(io PUBLIC "$<BUILD_INTERFACE:${icu_SOURCE_DIR}/icu4c/source/io>"
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 

@@ -5,7 +5,7 @@
 # Get icu version from icu4c/source/common/unicode/uvernum.h and put it in ICU_VERSION
 function(icu_extract_version)
   # Read the content of uvernum.h file
-  file(READ "${ICU_PATH}/icu4c/source/common/unicode/uvernum.h" file_contents)
+  file(READ "${icu_SOURCE_DIR}/icu4c/source/common/unicode/uvernum.h" file_contents)
   
   # Match U_ICU_VERSION_MAJOR_NUM macro
   string(REGEX MATCH "U_ICU_VERSION_MAJOR_NUM ([0-9]+)" _ "${file_contents}")
